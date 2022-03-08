@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <link href="css/bootstrap-bootstrap.min.css" rel="stylesheet">
+    <link href="css/css-all.min.css" rel="stylesheet">
+
+    <!-- New Styles for Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+
+        .clear_btn{
+            margin-left:-40px !important;
+            background: #DCDCDC !important;
+            border-radius:12.5px;
+            border:solid 1px #c9c9c9 !important;
+            width:25px !important;
+            height:25px !important;
+            margin-top:4px;
+            font-size:15px !important;
+        }
+        .clear_btn:after{
+            content: "x";
+            color: rgba(255, 255, 255, 0.6);
+            color:white !important;
+        }
+
+        .collapser{ cursor:pointer; display:block;}
+        .collapser + input{ display:none; }
+        .collapser + input + div{ display:none; }
+        .collapser + input:checked + div{ display:block; }
+
+        #logo,#logo a,#sidebar{text-align:center}hr,img{border:0}.btn,img{vertical-align:middle}#clear,.glyphicon{position:relative}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body,html{margin:0;padding:0;height:100%}#wrapper{min-height:100%;height:auto!important;height:100%;margin:0 auto -230px;padding-bottom:40px}#header{margin-left:auto;margin-right:auto;border-bottom:#CCC 1px solid;padding:15px 0}#logo a{display:block;margin:0 auto;text-indent:-9999px;background:url(../images/logo.png) center no-repeat;background-size:contain;width:164px;height:87px}#content #main.col-md-8{padding-bottom:30px}a{background:0 0}strong{font-weight:700}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}button,input,select{color:inherit;font:inherit;margin:0}.sidebar-separator,h2,label{font-weight:700}button{overflow:visible}button,select{text-transform:none}button,input[type=submit]{-webkit-appearance:button}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}.sidebar-section{margin:20px auto 30px;width:90%}.sidebar-separator{margin:0 auto 8px;background-color:#e9e9e9;width:100%;font-size:18px;height:35px;padding-top:6px}h2,hr{margin-top:20px}#newsletter p{text-align:left}#SLB,#clear,#leaderboard-advert,#logo,.btn,.mobile-advertisement{text-align:center}#newsletter form{width:80%;margin:0 auto}#newsletter form input{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;margin-bottom:8px;text-align:center}#newsletter form input[type=submit]{font-weight:700;text-transform:uppercase;font-size:14px!important}.page-title{margin-bottom:30px}form,h2{margin-bottom:10px}.help-text{font-size:13px;color:#414141;font-style:italic}#SLB{visibility:show;top:0;z-index:2;margin-left:-20px}form{margin-top:10px}input[type=text]#search{width:92%;float:left;border-right:none!important}#clear{display:inline-block;width:8%;height:34px;left:0;font-size:18px!important;color:#555;float:left;background-color:#ebebeb;border:1px solid #c9c9c9;border-left:none!important;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-sizing:border-box}.left-input{width:70%!important;float:left}.right-input{width:28%!important;float:right}.left-input input[type=text]{font-size:18px}.mobile-advertisement{display:none;margin-top:20px;margin-bottom:10px;clear:both!important}#displayresults{clear:both!important;width:100%}*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}html{font-size:62.5%}body{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#1a1a1a;background-color:#fff}button,input,select{font-family:inherit;font-size:inherit;line-height:inherit}a{color:#830300;text-decoration:none}hr{margin-bottom:20px;border-top:1px solid #525252}h2{font-family:inherit;line-height:1.2;color:inherit;font-size:24px;text-transform:uppercase}p{margin:0 0 10px}small{font-size:85%}.container{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px}@media (min-width:768px){.container{width:750px}}@media (min-width:992px){.container{width:970px}}@media (min-width:1200px){.container{width:1170px}}.col-md-12,.col-md-3,.col-md-4,.col-md-8,.col-md-9{position:relative;min-height:1px;padding-left:15px;padding-right:15px}@media (min-width:992px){.col-md-12,.col-md-3,.col-md-4,.col-md-8,.col-md-9{float:left}.col-md-12{width:100%}.col-md-9{width:75%}.col-md-8{width:66.66666667%}.col-md-4{width:33.33333333%}.col-md-3{width:25%}}@media (max-width:767px){#sidebar{margin-top:30px!important}}label{display:inline-block;margin-bottom:5px}input[type=checkbox],input[type=radio]{margin:4px 0 0;margin-top:1px\9;line-height:normal}.btn,.form-control{background-image:none;padding:6px 12px;font-size:14px;line-height:1.42857143}.form-control{display:block;width:100%;height:34px;color:#555;background-color:#ebebeb;border:1px solid #c9c9c9;border-radius:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075)}.btn,.glyphicon{display:inline-block}.form-control::-moz-placeholder{color:#999;opacity:1}.form-control:-ms-input-placeholder{color:#999}.form-control::-webkit-input-placeholder{color:#999}.btn{margin-bottom:10;font-weight:400;border:1px solid transparent;white-space:nowrap;border-radius:0}.btn-primary,.btn-success{color:#fff;font-weight:700;text-transform:uppercase}.btn-primary{background-color:#e33100;border-color:#ca2b00}.btn-success{background-color:#20a815;border-color:#1c9112;font-size:16px}@font-face{font-family:'Glyphicons Halflings';src:url(../fonts/glyphicons-halflings-regular.eot);src:url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')}.glyphicon{top:1px;font-family:'Glyphicons Halflings';font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.glyphicon-envelope:before{content:"\2709"}.clearfix:after,.clearfix:before,.container:after,.container:before{content:" ";display:table}.clearfix:after,.container:after{clear:both}@-ms-viewport{width:device-width}@media screen and (max-width:560px),screen and (max-device-width:720px){#wrapper{margin-bottom:0!important;padding-bottom:10px!important}.container{padding-left:2px!important;padding-right:2px!important}#content #main.col-md-8{padding-left:5px!important;padding-right:5px!important}#logo a{background:url(../images/logo-mobile.jpg) center no-repeat;background-size:contain;width:100%;max-width:500px;height:40px}#leaderboard-advert,#sidebar-advertisement{display:none}.left-input,.right-input{width:100%!important;float:none!important;margin-bottom:6px}#clear{float:left;clear:none!important;position:relative}button.right-input{webkit-border-radius:6px!important;-moz-border-radius:6px!important;border-radius:6px!important;width:60%!important;float:left}#newsletter .btn-success{font-size:14px!important}.mobile-advertisement{display:block}}
+
+        @media screen and (max-width:600px) {
+            .defLink { width:auto !important;}
+        }
+
+    </style>
+
+    <!-- snig -->
+    <script>
+    var breakpoint = 'xsmall';
+	
+	var w = window.innerWidth;
+
+		breakpoint = w>=768 ? 'small' : breakpoint;				
+		breakpoint = w>=960 ? 'medium' : breakpoint;				
+		breakpoint = w>=1280 ? 'large' : breakpoint;		
+		breakpoint = w>=1400 ? 'xlarge' : breakpoint;
+
+	     window.activeUnits = [];
+
+		switch(breakpoint.toLowerCase()) {
+        	case 'xsmall':	// Small Mobile
+            	 window.activeUnits = ["mobile_leaderboard","mobile_bottom_adhesive","mobile_mpu"]; // Mobile Ad Units
+            break;
+        	case 'small': // Portrait Tablet / Large Mobile
+            	  window.activeUnits = ["mobile_leaderboard","mobile_bottom_adhesive","mobile_mpu"]; // Mobile Ad Units        
+            break;
+        	default:
+        	case 'medium': 
+        	case 'xlarge':
+        	case 'large':
+            	  window.activeUnits = ["desktop_leaderboard", "sidebar_top","sidebar_bottom_sticky", "sidebar160_left", "sidebar160_right", "desktop_incontent"];
+            break;
+        }
+
+
+
+</script>
+<script data-cfasync="false" type="text/javascript">
+	
+	
+    window.snigelPubConf = {
+        "adengine": {
+            "activeAdUnits": window.activeUnits // Mobile Ad Units
+        }
+    }
+
+</script>
+
+<script data-cfasync="false" async src="js/loader.js" type="text/javascript"></script>
+
+<script src="js/videoloader.js" async></script>
+    <!-- snig end -->
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+
+
+</head>
+<body>
+<style id="inline-styles">
+    nav.mini { margin-bottom:10px;text-align:center;}
+    nav.mini a { color:#fff;margin-bottom:5px;font-size:0.9em;text-decoration:none !important;display:inline-block;background:#fff;color:#000;margin-right:5px;border-radius:6px;padding:5px 10px;}
+    nav.mini a:hover { background:rgba(255,255,255,0.8);}
+
+</style>
+<div style="margin-bottom:15px;">
+    <div class="container">
+        
+
+<div id="header" class="col-md-12">
+
+    <div id="logo" class="col-md-3">
+        <a href="www.thewordfinder.html">The Word Finder</a>
+    </div>
+
+    <div id="leaderboard-advert" class="col-md-9">
+        <div id="SLB">
+<!--<pre>desktop_leaderboard desktop:[728,90], dfp:[845,90]</pre>-->            
+<div id="adngin-desktop_leaderboard-0"></div>        </div>
+    </div>
+
+</div>
+
+
+
+<!--This message to send a message on header for entire site! -->
+<!--
+<div class="hidden-xs hidden-sm visible-lg visible-md">
+    <p style="margin-top:143px" class="alert alert-warning">Routine maintenance - server reboot momentarily - website may be unavailable for several seconds</p>
+</div>
+<div class="hidden-lg hidden-md visible-xs visible-sm">
+    <p style="margin-top:15px" class="alert alert-warning">Routine maintenance - server reboot momentarily - website may be unavailable for several seconds</p>
+</div>
+-->
+     </div>
+</div>
+<style>
+    #logo a { padding:10px;background-color:#fff;border-radius:10px;}
+    body { background:transparent !important;color:#000;width:100%;height:100%;margin:0;padding:0;}
+    .advert { height:60px;line-height:60px;text-align:center;background:#fff;margin-bottom:15px;display:block;width:100%; color:#000;font-weight:bold;}
+    #mobile-board-distributions { background:rgba(0, 0, 0,0.4) !important;}
+    #board-distributions { background:rgba(0, 0, 0,0.4) !important;}
+    header { background:#fff !important;padding:15px 0 10px 0;margin:0;}
+</style>
+
+<style>
+
+
+    h1 span { color:#900 !important;}
+    h1 + p { margin-bottom:20px;}
+
+    img {max-width:100%;}
+</style>
+<div class="container board-solver-container">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+
+            <div class="form-group" style="margin-bottom:40px;">
+
+                <style type="text/css">
+    #runtime { display:none;}
+    body,
+    td,
+    p {
+        font: 12px "Trebuchet MS", Helvetica, sans-serif;
+    }
+
+    a,
+    a:visited {
+        color: blue;
+    }
+
+    a:hover {
+        color: red;
+    }
+
+    .board-container {
+
+    }
+    /*.board-container {
+        text-align: center;
+        position: relative;
+        padding: 20px 0;
+        max-width:500px;
+        margin: auto;
+
+        background: #e5e5e5;
+        border-radius: 10px;
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    }*/
+
+
+
+    table {
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .board-block {
+        position: relative;
+        margin: 0 auto;
+        width:100%;
+        display:block;
+        background: #f5f5f5;
+        /*border: 3px solid #e5e5e5;*/
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+
+    h1 { margin:0 0 15px 0;line-height:1em;}
+
+
+
+
+    .input:hover { cursor:pointer;background:#cdc7f8;border:0 transparent !important;outline:none;}
+    .input:focus { background:#ffc !important;border:0 transparent !important;outline:none;}
+
+    .input {
+        background:#fff;
+        border: 0  !important;
+        padding:0  !important;
+        margin:0  !important;
+        display:block;
+        font-weight:bold;
+        font-size:2em;
+        width: calc(360px / 9) ;
+        height: calc(360px / 9);
+        text-align: center;
+    }
+    #9x9 { width:360px;height:360px;}
+    #9x9 table { width:360px;height:360px; }
+
+    @media screen and (max-width:480px) {
+        .input {
+            background:#fff;
+            border: 0  !important;
+            padding:0  !important;
+            margin:0  !important;
+            display:block;
+            font-weight:bold;
+            font-size:1.4em;
+            width: calc(240px / 9) ;
+            height: calc(240px / 9);
+            text-align: center;
+        }
+        #9x9 { width:240px;height:240px;}
+        #9x9 table { width:240px;height:240px; }
+    }
+
+    .hover { background:#ede7f8 !important;}
+
+    .cell {
+        width: 33.333333333333%;
+        height: 33.333333333333%;
+        border-bottom: 1px solid;
+        border-left: 1px solid;
+        padding: 0 !important;
+    }
+
+    .cell1 {
+        width: 33.333333333333%;
+        height: 33.333333333333%;
+        border-bottom: 4px solid;
+        border-left: 1px solid;
+        padding: 0 !important;
+    }
+
+    .cell2 {
+        width: 33.333333333333%;
+        height: 33.333333333333%;
+        border-bottom: 1px solid;
+        border-left: 4px solid;
+        padding: 0 !important;
+    }
+
+    .cell3 {
+        width: 33.333333333333%;
+        height: 33.333333333333%;
+        border-bottom: 4px solid;
+        border-left: 4px solid;
+        padding: 0 !important;
+    }
+
+    .table {
+        border-top: 4px solid;
+        border-right: 4px solid;
+        border-collapse: collapse
+    }
+    .btn { margin-bottom:10px;}
+    tr.error,
+    tr.error .input,
+    td.error,
+    td.error .input,
+    .error { background:#ed6666 !important;}
+
+     input::-webkit-outer-spin-button,
+     input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
+     }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+<div class="board-container text-center">
+    <h1 style="font-weight:bold;">Sudoku Solver</h1>
+    <p>Use the arrow keys to move to different cells within the sudoku board.</p>
+
+    <div class="text-center">
+        <div class="board-block" style="display:inline-block;">
+            <img src="images/images-sudoku-arrow.png" alt="">
+            <table style="margin-top:10px;">
+                <tr style="vertical-align: top">
+                    <td style="padding: 0 10px;">
+                        <span id="9x9"></span>
+                    </td>
+                </tr>
+            </table>
+            <div style="padding-top: 10px;">
+                <div>
+
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="solve();"><i class="fa fa-th" style="margin-right:10px;"></i>SOLVE IT</button>
+                    <button id="reveal" type="button" class="btn btn-sm btn-secondary" onclick="revealCell(this);"><i class="fa fa-square" style="margin-right:10px;"></i>REVEAL CELL</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="clear_input();"><i class="fa fa-trash" style="margin-right:10px;"></i>CLEAR</button>
+                </div>
+                <div id="runtime" style="color: gray; padding-top: 10px;">
+                    Solved puzzle in 0 seconds ( 0 ms ).
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #reveal { display:none; }
+</style>
+<script type="text/javascript" src="js/js-sudoku-solver.js"></script>
+<script type="text/javascript">
+    var Key = {
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40};
+    window.addEventListener('load',function() {
+        setPredefined('');
+        draw_9x9();
+
+        jQuery('#9x9 input').on('keyup',function() {
+            check(this);
+        }).on('keydown',function(e) {
+            var block = jQuery(this).data('block');
+            var row = parseInt(jQuery(this).data('row'));
+            var col = parseInt(jQuery(this).data('col'));
+            var e = window.event || e;
+            if (e.keyCode===Key.LEFT) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (col>0) {
+                    col--;
+                    var ci = (row*9)+col;
+                    console.log(ci);
+                    jQuery('#C'+ci).focus();
+                    focus(document.getElementById('C'+ci));
+                }
+            } else if (e.keyCode==Key.RIGHT) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (col<8) {
+                    col++;
+                    var ci = (row*9)+col;
+                    jQuery('#C'+ci).focus();
+                    focus(document.getElementById('C'+ci));
+                }
+            } else if (e.keyCode===Key.DOWN) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (row<8) {
+                    row++;
+                    var ci = (row*9)+col;
+                    jQuery('#C'+ci).focus();
+                    focus(document.getElementById('C'+ci));
+                }
+            } else if (e.keyCode===Key.UP) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (row>0) {
+                    row--;
+                    var ci = (row*9)+col;
+                    jQuery('#C'+ci).focus();
+                    focus(document.getElementById('C'+ci));
+                }
+            }
+            check(this);
+        }).on('focus',function() {
+
+            jQuery('td').removeClass('error');
+            jQuery('tr').removeClass('error');
+            jQuery('.input').removeClass('error');
+            isValidSudoku();
+            focus(this);
+            hover(this);
+            jQuery('#reveal').data('cell',jQuery(this).data('cell')).show();
+        }).on('mouseover',function() {
+        }).on('blur',function() {
+            isValidSudoku();
+            jQuery('td').removeClass('error');
+            jQuery('tr').removeClass('error');
+            jQuery('.input').removeClass('big');
+            unhover(this);
+        });
+    });
+
+
+</script>            </div>
+
+            <div class="clearfix">
+                <!--<pre>desktop_leaderboard desktop:[728,90], dfp:[845,90]</pre>-->            
+<div id="adngin-desktop_leaderboard-0"></div>            </div>
+        </div>
+
+
+<style>
+                .related_tools-container { padding:1px 10px 12px 10px;margin:0 auto;border-radius:10px;display:block;background:#fff;}
+                .related_tools { padding:13px 15px 10px 15px;text-align:left;display:block;border:2px solid #ccc;margin-top:15px;position:relative;}
+                /* font of related header */
+                .related_tools > strong { position:absolute;top:-10px;color:#000;left:4px;font-size:14px;padding:0 6px;background:#fff;display:inline-block; }
+                .related_tools ul { margin:10px !important;padding:0  !important;list-style:none !important; }
+                .related_tools li { margin:0 0 5px 0 !important;padding:0  !important;list-style:none !important; }
+                .related_tools li:last-child { margin:0 !important;padding:0; }
+                /* font of links */
+                .related_tools a { text-decoration:none;line-height:24px;color:#000;}
+                .related_tools a i { color:#333;margin-right:5px;font-size:0.85em;margin-left:-4px;}
+            </style>
+        <!--- Text BLock --->
+
+        <!-- Column 1 --->
+        
+        <div class="col-md-4">
+        <div style="background-color:#f5f5f5; padding:15px;">    
+            <h3>Solve Your Tough Sudoku Puzzles Above</h3>
+            <p>Stuck on a tough sudoku puzzle? Use our Sudoku Solver above to find the solutions to your puzzles. Simply enter in the known numbers in the appropriate squares, click SOLVE IT, and the solver will quickly return your solution. Simple!</p>
+</div>
+        </div>
+
+        <!-- Column 2 --->
+
+        <div class="col-md-4">
+            <div style="background-color:#f5f5f5; padding:15px;">
+            <div class="related_tools-container" style="width:100%;">
+                            <div class="related_tools">
+                                <strong>Useful Links</strong>
+                                <ul>
+                                    <li><a style="font-size:1.2em;line-height:1.4em;" href="https://en.wikipedia.org/wiki/Sudoku"><i class="fa fa-chevron-right"></i>Wikipedia Page for Sudoku</a><br></li>
+                                    <li><a style="font-size:1.2em;line-height:1.4em;" href="http://www.ams.org/notices/200904/rtx090400460p.pdf"><i class="fa fa-chevron-right"></i>Sudoku Solving Algorithms</a><br></li>
+                                    <li><a style="font-size:1.2em;line-height:1.4em;" href="https://www.worldpuzzle.org/championships/wsc/"><i class="fa fa-chevron-right"></i>Sudoku World Championships</a><br></li>
+                                    <li><a style="font-size:1.2em;line-height:1.4em;" href="sudoku.html"><i class="fa fa-chevron-right"></i>Play Sudoku Puzzles at TWF</a><br></li>
+                                </ul></div>
+                        </div></div>
+        </div>
+
+        <!-- Column 3 --->
+
+        <div class="col-md-4">
+            <div style="background-color:#f5f5f5; padding:15px;">
+         <h3>Play Sudoku Puzzles at The Word Finder</h3>
+            <p>We've got our own set of Sudoku Puzzles you can play on The Word Finder. Check the page in the Useful Links section. You can choose your difficulty level, time yourself, and much more!</p>
+</div>
+        </div>
+
+
+
+        <!-- Text BLock End --->
+<!-- paragraph -->
+<p>Welcome to our Sudoku Solver! Our tool can help you solve even the most stubborn Sudoku game.</p>
+<!-- /paragraph -->
+<br><br>
+<!-- heading {"level":3} -->
+<h3><strong>How to Use the Sudoku Solver</strong></h3>
+<!-- /heading -->
+
+<!-- list {"ordered":true} -->
+<ol><li><em>Enter the known data into the grid. </em>Using the tool's main interface, enter all of the numbers as they exist on your board. We recommend entering only the game-given numbers, so you can make sure you haven&rsquo;t made a mistake. However, if you have a half-solved board, you can also enter the numbers you&rsquo;ve found yourself. But be careful to enter only the numbers you are sure about, or you risk confusing our tool!</li><li><em>Click &lsquo;solve it&rsquo; or &lsquo;clear&rsquo;. </em>Once you&rsquo;ve entered your numbers and are sure everything is in the correct spot, click &lsquo;solve it&rsquo;. Our board will automatically populate all of the remaining squares, giving you a solved game. Or, if you&rsquo;d like to start over, click &lsquo;clear&rsquo; to enter a different board.</li><li><em>If you have entered incorrect data, the board will reset. </em>It&rsquo;s essential to make sure you are entering numbers correctly. If you enter a puzzle board that cannot be solved, the board will go blank, prompting you to start again. Be careful when entering values! This is also why we recommend entering only the board-given (starting) numbers, instead of numbers you yourself have solved. It will help avoid the possibility you&rsquo;ve entered an incorrect number.</li><li><em>Check out our Sudoku games to find your next puzzle. </em>Once you&rsquo;ve solved your Sudoku puzzle, you&rsquo;ll need new material. Check out<a href="sudoku.html"> the Word Finder&rsquo;s Sudoku puzzles</a>, also shared in the Useful Links section below.</li></ol>
+<!-- /list -->
+
+<!-- heading {"level":3} -->
+<h3><strong>History of Sudoku</strong></h3>
+<!-- /heading -->
+
+<!-- paragraph -->
+<p>It might surprise you to learn that, despite its name, <a href="https://en.wikipedia.org/wiki/Sudoku#History">Sudoku</a> is not from Japan. Sudoku, in its earliest form, actually originated in France. In the 1800s, French newspapers created their own number puzzles, which were designed from magic squares. Magic squares are squares that contain nine numbers, three per row. Each row's numbers must add up to fifteen. Early French puzzles removed some numbers from &lsquo;magic squares&rsquo; and challenged players to put them back in using math. Later, in 1895, one French newspaper used magic square puzzles as the basis for its own number game, in which each row and column contained every number from one through nine. However, unlike in modern Sudoku, subsquares were not marked.</p>
+<!-- /paragraph -->
+
+<!-- paragraph -->
+<p>The first iteration of modern Sudoku was finally published by Dell Magazines in 1979, and dubbed &lsquo;Number Place&rsquo;. Though it&rsquo;s unclear who exactly designed the game, it was most likely created by Howard Garns, a retiree and freelance puzzle constructor from Indiana.</p>
+<!-- /paragraph -->
+
+<!-- paragraph -->
+<p>Why the name &lsquo;Sudoku&rsquo;, then? Number Place was introduced to Japan in 1984 and quickly caught on. It was during this expansion that the name Sudoku was introduced, an abbreviation of a phrase meaning &lsquo;the digits are limited to one occurrence.&rsquo; From Japan, the game was introduced to Hong Kong, and from there was reintroduced to Britain and the United States &mdash; meaning that the name &lsquo;Sudoku&rsquo; was adopted worldwide, and the game&rsquo;s French and American origins were forgotten.</p>
+<!-- /paragraph -->
+
+<!-- heading {"level":3} -->
+<h3><strong>Tips for Playing Sudoku</strong></h3>
+<!-- /heading -->
+
+<!-- paragraph -->
+<p>If you&rsquo;re at this page, you&rsquo;re probably struggling to solve a game. While our Sudoku Solver can help you out in the short-run, here are a few tips for how to get better at Sudoku puzzles:</p>
+<!-- /paragraph -->
+
+<!-- list {"ordered":true} -->
+<ol><li><em>Work one number at a time.</em></li></ol>
+<!-- /list -->
+
+<!-- paragraph -->
+<p>Though it can be tempting to jump around when solving, try to pick one number at a time and stick with it. This can help make sure you&rsquo;re not missing obvious solves, and can help you flesh out the board to eliminate possibilities for other numbers. Instead of starting in the left lower corner of the board and looking for answers, pick a number and search for every instance of it on the board. For instance, based on how the board is already filled out, where do you know there have to be more &lsquo;1&rsquo;s? Work in this way through every number, then come back to the beginning. By this time, you&rsquo;ve likely filled in at least a few squares, and may have narrowed down options for other numbers.</p>
+<!-- /paragraph -->
+
+<!-- list {"ordered":true,"start":2} -->
+<ol start="2"><li><em>Mark possibilities in the top corner with pencil. (Or, if you&rsquo;re playing Sudoku digitally, look for the game&rsquo;s annotation options.)</em></li></ol>
+<!-- /list -->
+
+<!-- paragraph -->
+<p>One of the best ways to speed up a solve is by using annotations. Oftentimes, even if you cannot precisely narrow down what number fits into a specific square, you can narrow it down to two or three options. Marking these options as you go (in small print, usually in the top right corner) has a few benefits. </p>
+<!-- /paragraph -->
+
+<!-- paragraph -->
+<p>First, it can help save you time. Instead of coming back several times in a single solution and having to search again for possibilities, you only have to search once. This can be very helpful, especially as you get better at Sudoku and start racing the clock. Another benefit is that, sometimes, these notes can help you to solve other squares. For instance, if I know that the number &lsquo;1&rsquo; must be present in one of two boxes in a sub-square, I can know that a &lsquo;1&rsquo; won&rsquo;t go anywhere else in that square.</p>
+<!-- /paragraph -->
+
+<!-- list {"ordered":true,"start":3} -->
+<ol start="3"><li><em>Start in the boxes, columns, or rows where there are the most given numbers.</em></li></ol>
+<!-- /list -->
+
+<!-- paragraph -->
+<p>Perhaps an obvious tip, but one worth remembering: it is always easiest to start a solve in the areas with the most &lsquo;given&rsquo; numbers, or the numbers already on the board. If you see a square with seven of the nine squares filled in, try there first! Same goes for nearly-filled columns and rows. Though you might be tempted to dive right into tackling the difficult sections of the board, filling out easy sections will actually help narrow down options for unsolved areas, and ultimately facilitate a win for you.</p>
+<!-- /paragraph -->
+
+<!-- heading {"level":3} -->
+<h3><strong>Feedback</strong> on Our Sudoku Solver</h3>
+<!-- /heading -->
+
+<!-- paragraph -->
+<p>How do you like our Sudoku Solver? Did you find it useful, or are there more features you&rsquo;d like to see added? Feel free to reach out to us using the contact link in the footer below to tell us how you use the tool and to give us any suggestions for improvements!</p>
+<!-- /paragraph -->
+
+    </div>
+</div>
+<style type="text/css">
+    #footer { padding:20px 0;display:block;color:#fff;box-shadow:-5px 0 5px rgba(0,0,0,0.4);}
+    #footer ul { margin:0;padding:0;list-style:none;}
+    #footer li { margin:0 0 5px 0;padding:0;list-style:none;}
+    #footer a { border:0  !important;outline:none !important;font-size:1.2em;color:#212529;
+		    display:block;
+		    height:32px;
+		    line-height: 32px;}
+    #facebook-link a{display:block;margin-bottom:6px;background:url(/images/facebook.png) no-repeat;border:0  !important;outline:none !important;width:147px;height:33px;text-indent: -9999px}
+    #twitter-link a{display:block;margin-bottom:6px;background:url(/images/twitter.png) no-repeat;border:0  !important;outline:none !important;width:147px;height:33px;text-indent: -9999px }
+    #google-link a{display:block;background:url(/images/instagram.png) no-repeat;border:0  !important;outline:none !important;width:147px;height:33px;text-indent: -9999px }
+    h6, .h6 {
+        font-size: 1.6em;
+        font-weight: 700;
+        margin-bottom:10px !important;
+        color:#7B5337;
+    }
+    #footer .col-md-3 { margin-bottom:15px;}
+    #footer .col-md-3:last-child { margin-bottom:0;}
+
+</style>
+<div id="footer_container" style="margin-top:40px;display:block;" class="clearfix">
+    <div id="footer" class="col-md-12" style="padding-bottom:60px;height:auto;background:#f8f9fa;">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <h6>The Word Finder</h6>
+                    <div class="clearfix mb-2">
+                        
+                            <ul class="list-group">
+                                <li class="list-group-item-nav"><a href="activity-room.html" rel="nofollow">Activity Room</a></li>
+                                <li class="list-group-item-nav"><a href="anagram-solver.html" rel="nofollow">Anagram Solver</a></li>
+                                <li class="list-group-item-nav"><a href="backwards.html" rel="nofollow">Backwards Text Converter</a></li>
+                                <li class="list-group-item-nav"><a href="fs.wordfinder.html" rel="nofollow">Wordsearch Maker</a></li>
+                                <li class="list-group-item-nav"><a href="crossword.html" rel="nofollow">Crossword Solver</a></li>
+                                <li class="list-group-item-nav"><a href="draw-something-help.html" rel="nofollow">Draw Something Word Finder</a></li>
+                                <li class="list-group-item-nav"><a href="literati.html" rel="nofollow">Literati Word Finder</a></li>
+                                <li class="list-group-item-nav"><a href="sudoku.html" rel="nofollow">Play Sudoku Puzzles</a></li>
+                            </ul>
+                        
+                      
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6>More Tools</h6>
+                    <ul class="list-group">
+                                <li class="list-group-item-nav"><a href="scrabblewordfinder.html" rel="nofollow">Scrabble Help with Board</a></li>
+                                <li class="list-group-item-nav"><a href="scrabble.html" rel="nofollow">Scrabble Word Finder</a></li>
+                                <li class="list-group-item-nav"><a href="scramble-with-friends-word-find.html" rel="nofollow">Scramble with Friends Solver</a></li>
+                                <li class="list-group-item-nav"><a href="sudoku-solver.html" rel="nofollow">Sudoku Solver</a></li>
+                                <li class="list-group-item-nav"><a href="contains.html" rel="nofollow">Words That Contain</a></li>
+                                <li class="list-group-item-nav"><a href="ends-with.html" rel="nofollow">Words That End With</a></li>
+                                <li class="list-group-item-nav"><a href="starts-with.html" rel="nofollow">Words That Start With</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Wordy Stuff</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item-nav"><a href="privacy.html" rel="nofollow" title="TheWordFinder!:Privacy policy">Privacy policy</a></li>
+                        <li class="list-group-item-nav"><a href="about-us.html" rel="nofollow" title="TheWordFinder!:About">About TheWordFinder!</a></li>
+                        <li class="list-group-item-nav"><a href="disclaimers.html" rel="nofollow" title="TheWordFinder!:General disclaimer">Disclaimers</a></li>
+                        <li class="list-group-item-nav"><a href="contactform.html" rel="nofollow" title="TheWordFinder Contact Us">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+
+                    <h6>Connect with Us</h6>
+                    <ul class="list-group" style="margin-bottom:20px">
+                        <li class="list-group-item" style="background:transparent !important;outline:none;border:0;" id="facebook-link"><a href="https://www.facebook.com/pages/TheWordFindercom/109606082406882" target="_blank">Facebook</a></li>
+                        <li class="list-group-item" style="background:transparent !important;outline:none;border:0;" id="twitter-link"><a href="http://twitter.com/thewordfinder" target="_blank">Twitter</a></li>
+                        <li class="list-group-item" style="background:transparent !important;outline:none;border:0;" id="google-link"><a href="https://www.instagram.com/thewordfinderhumor/" target="_blank">Instagram</a></li>
+                    </ul>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- END FOOTER ------------------------------------------------ -->
+
+    <style type="text/css">
+        .scrollup {
+            width: 40px;
+            height: 40px;
+            position: fixed;
+            bottom: 50px;
+            right: 100px;
+            display: none;
+            font-size:1.4em;
+            text-align:center;
+            line-height:40px;
+            color:#fff;
+            background-color: #e33100;
+        }
+        .scrollup:hover { color:#fff; }
+    </style>
+
+
+
+
+
+    <!-- Google+ Script -->
+    <script type="text/javascript">
+        (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/platform.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+    <!-- End Google+ Script -->
+
+    <!-- Facebook Script -->
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=137021763175744";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!-- End Facebook Script -->
+
+    <!-- Twitter Script -->
+    <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    </script>
+    <!-- End Twitter Script -->
+
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        } ) (window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-531704-1', 'thewordfinder.com');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+    </script>
+
+</div>
+
+<script defer type="text/javascript" src="js/dist-jquery.min.js"></script>
+<script defer type="text/javascript" src="js/bootstrap-bootstrap.min.js"></script>
+
+</body>
+</html>
